@@ -128,7 +128,7 @@ class _FooterContact extends StatelessWidget {
           SizedBox(height: 14),
           SelectableText('test@dummy.com', style: TextStyle(color: Colors.white70)),
           SizedBox(height: 10),
-          SelectableText('+91 XXXXX XXXXX', style: TextStyle(color: Colors.white70)),
+          SelectableText('+91 9455122458', style: TextStyle(color: Colors.white70)),
           SizedBox(height: 10),
           SelectableText('India • Working Globally', style: TextStyle(color: Colors.white70)),
         ],
