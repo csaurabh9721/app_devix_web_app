@@ -1,97 +1,88 @@
 import 'package:flutter/material.dart';
 
-class FeaturesSection extends StatelessWidget {
-  const FeaturesSection({super.key});
+import '../data/feature_data.dart';
 
-  static final List<FeatureItem> features = [
-    FeatureItem(
-      icon: Icons.architecture,
-      title: 'Clean & Scalable Architecture',
-      desc:
-      'We follow clean architecture principles to ensure your product is scalable, maintainable, and future-ready.',
-    ),
-    FeatureItem(
-      icon: Icons.speed,
-      title: 'Performance First',
-      desc:
-      'Optimized code and best practices to deliver fast, smooth, and reliable user experiences.',
-    ),
-    FeatureItem(
-      icon: Icons.groups,
-      title: 'Startup-Focused Approach',
-      desc:
-      'We understand startup challenges and build products that grow with your business.',
-    ),
-    FeatureItem(
-      icon: Icons.security,
-      title: 'Secure by Design',
-      desc:
-      'Security best practices are integrated from day one to protect your data and users.',
-    ),
-    FeatureItem(
-      icon: Icons.sync_alt,
-      title: 'Agile & Transparent Process',
-      desc:
-      'Clear communication, regular updates, and agile execution throughout the project.',
-    ),
-    FeatureItem(
-      icon: Icons.support_agent,
-      title: 'Long-Term Support',
-      desc:
-      'We don’t just deliver projects—we build long-term partnerships with ongoing support.',
-    ),
-  ];
+class FeaturesSection extends StatelessWidget {
+  FeaturesSection({super.key});
+
+  final FeatureData _data = FeatureData();
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = width < 900;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 24),
-      color: Colors.white,
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 45 : 90,
+        horizontal: isMobile ? 16 : 24,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.indigo.withOpacity(0.05),
+            Colors.white,
+            Colors.white,
+          ],
+        ),
+      ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1100),
+          constraints: const BoxConstraints(maxWidth: 1200),
           child: Column(
             children: [
-              const SelectableText(
-                'Why Choose Appdevix',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 14),
-              const SelectableText(
-                'We focus on quality, scalability, and long-term success—not just delivery.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                ),
-              ),
-              const SizedBox(height: 60),
-
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  int columns = 3;
-                  if (constraints.maxWidth < 1000) columns = 2;
-                  if (constraints.maxWidth < 650) columns = 1;
-
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: features.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columns,
-                      crossAxisSpacing: 32,
-                      mainAxisSpacing: 32,
-                      childAspectRatio: 1.3,
+              /// Header
+              Column(
+                children: const [
+                  Text(
+                    'WHY APPDEVIX',
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.indigo,
                     ),
-                    itemBuilder: (context, index) {
-                      return FeatureCard(item: features[index]);
-                    },
-                  );
-                },
+                  ),
+                  SizedBox(height: 16),
+                  SelectableText(
+                    'Built for ambition. Engineered for growth.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 38,
+                      fontWeight: FontWeight.w800,
+                      height: 1.2,
+                    ),
+                  ),
+                  SizedBox(height: 18),
+                  SelectableText(
+                    'We don’t just build software — we create scalable, reliable products that help businesses grow with confidence.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16.5,
+                      height: 1.8,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: isMobile ? 30 : 50),
+
+              /// Features Grid (Soft, Premium)
+              Wrap(
+                spacing: 30,
+                runSpacing: 30,
+                children: _data.features.map(
+                      (feature) {
+                    return SizedBox(
+                      width: isMobile ? double.infinity : 520,
+                      child: FeatureShowcaseItem(item: feature),
+                    );
+                  },
+                ).toList(),
               ),
             ],
           ),
@@ -100,64 +91,97 @@ class FeaturesSection extends StatelessWidget {
     );
   }
 }
-class FeatureCard extends StatelessWidget {
+
+
+
+
+
+class FeatureShowcaseItem extends StatefulWidget {
   final FeatureItem item;
 
-  const FeatureCard({super.key, required this.item});
+  const FeatureShowcaseItem({super.key, required this.item});
+
+  @override
+  State<FeatureShowcaseItem> createState() => _FeatureShowcaseItemState();
+}
+
+class _FeatureShowcaseItemState extends State<FeatureShowcaseItem> {
+  bool isHovered = false;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(28),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.grey.shade200),
-        color: Colors.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.indigo.shade50,
-              borderRadius: BorderRadius.circular(12),
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        transform: isHovered
+            ? (Matrix4.identity()..translate(0.0, -6.0))
+            : Matrix4.identity(),
+        padding: const EdgeInsets.all(28),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white.withOpacity(0.85),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.indigo.withOpacity(isHovered ? 0.25 : 0.12),
+              blurRadius: isHovered ? 40 : 25,
+              offset: const Offset(0, 18),
             ),
-            child: Icon(item.icon, color: Colors.indigo),
-          ),
-          const SizedBox(height: 22),
-          SelectableText(
-            item.title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// Glass Icon
+            Row(
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.indigo.withOpacity(0.35),
+                        blurRadius: 20,
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    widget.item.icon,
+                    color: Colors.indigo,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 22),
+
+                SelectableText(
+                  widget.item.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 12),
-          SelectableText(
-            item.desc,
-            style: const TextStyle(
-              fontSize: 15,
-              height: 1.5,
-              color: Colors.black87,
+            const SizedBox(height: 14),
+            SelectableText(
+              widget.item.desc,
+              style: const TextStyle(
+                fontSize: 15.5,
+                height: 1.8,
+                color: Colors.black87,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
 
-class FeatureItem {
-  final IconData icon;
-  final String title;
-  final String desc;
 
-  const FeatureItem({
-    required this.icon,
-    required this.title,
-    required this.desc,
-  });
-}
+
