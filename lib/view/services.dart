@@ -1,90 +1,91 @@
 import 'package:flutter/material.dart';
 
-class ServiceItem {
-  final IconData icon;
-  final String title;
-  final String desc;
-
-  const ServiceItem({required this.icon, required this.title, required this.desc});
-}
+import '../data/service_data.dart';
 
 class ServicesSection extends StatelessWidget {
-  const ServicesSection({super.key});
+  ServicesSection({super.key});
 
-  static final List<ServiceItem> services = [
-    ServiceItem(
-      icon: Icons.phone_iphone,
-      title: 'Mobile App Development',
-      desc: 'High-performance Flutter & Native Android apps with clean architecture and great UX.',
-    ),
-    ServiceItem(
-      icon: Icons.cloud,
-      title: 'Backend & API Development',
-      desc: 'Secure, scalable backend systems using Spring Boot and .NET.',
-    ),
-    ServiceItem(
-      icon: Icons.web,
-      title: 'Web Application Development',
-      desc: 'Modern, responsive web applications built with Angular and React.',
-    ),
-    ServiceItem(
-      icon: Icons.rocket_launch,
-      title: 'MVP for Startups',
-      desc: 'Rapid MVP development to validate ideas and launch faster.',
-    ),
-    ServiceItem(
-      icon: Icons.settings,
-      title: 'App Maintenance & Scaling',
-      desc: 'Ongoing support, performance optimization, and scaling.',
-    ),
-    ServiceItem(
-      icon: Icons.design_services,
-      title: 'UI/UX & Product Design',
-      desc: 'User-focused design that delivers clean and engaging experiences.',
-    ),
-  ];
+  final ServiceData _serviceData = ServiceData();
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final bool isMobile = size.width < 700;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 90, horizontal: 24),
-      color: Colors.grey.shade100,
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 70 : 110,
+        horizontal: isMobile ? 16 : 24,
+      ),
+      color: const Color(0xFFF8F9FB),
       child: Column(
         children: [
-          SelectableText('What We Do at Appdevix', style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 14),
-          const SelectableText(
-            'End-to-end product development services for startups and growing businesses.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, color: Colors.black54),
+          /// Section Label
+          Text(
+            'OUR SERVICES',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.5,
+              color: Colors.indigo.shade500,
+            ),
           ),
-          const SizedBox(height: 56),
+          const SizedBox(height: 12),
 
-          /// IMPORTANT: Width Constraint
+          /// Title
+          SelectableText(
+            'What We Do at Appdevix',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: isMobile ? 26 : 36,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          /// Subtitle
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: SelectableText(
+              'From idea to launch, we deliver scalable digital products for startups and growing businesses.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: isMobile ? 14 : 16,
+                height: 1.6,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+
+          SizedBox(height: isMobile ? 48 : 70),
+
+          /// Cards
           LayoutBuilder(
             builder: (context, constraints) {
-              int columns = 3;
+              final maxWidth = constraints.maxWidth;
+              double cardWidth;
 
-              if (constraints.maxWidth < 1100) columns = 2;
-              if (constraints.maxWidth < 700) columns = 1;
+              if (maxWidth >= 1200) {
+                cardWidth = 380;
+              } else if (maxWidth >= 700) {
+                cardWidth = maxWidth / 2 - 24;
+              } else {
+                cardWidth = maxWidth;
+              }
 
               return Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1100),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: services.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columns,
-                      crossAxisSpacing: 32,
-                      mainAxisSpacing: 32,
-                      childAspectRatio: 1.25, // ⭐ KEY FIX
-                    ),
-                    itemBuilder: (context, index) {
-                      return ServiceCard(item: services[index]);
-                    },
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Wrap(
+                    spacing: 24,
+                    runSpacing: 24,
+                    children: _serviceData.services.map((service) {
+                      return SizedBox(
+                        width: cardWidth,
+                        child: ServiceCard(item: service),
+                      );
+                    }).toList(),
                   ),
                 ),
               );
@@ -95,6 +96,10 @@ class ServicesSection extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 class ServiceCard extends StatefulWidget {
   final ServiceItem item;
@@ -110,59 +115,101 @@ class _ServiceCardState extends State<ServiceCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 700;
+    final enableHover = !isMobile;
+    final color = widget.item.accentColor;
+
     return MouseRegion(
-      onEnter: (_) => setState(() => isHovered = true),
-      onExit: (_) => setState(() => isHovered = false),
+      onEnter: enableHover ? (_) => setState(() => isHovered = true) : null,
+      onExit: enableHover ? (_) => setState(() => isHovered = false) : null,
       cursor: SystemMouseCursors.click,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 220),
+        transform: isHovered
+            ? (Matrix4.identity()..translate(0.0, -6.0))
+            : Matrix4.identity(),
+        padding: EdgeInsets.all(isMobile ? 22 : 28),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isHovered ? color.withValues(alpha: 0.25) : Colors.transparent,
+          ),
           boxShadow: [
             BoxShadow(
-              color: isHovered
-                  ? Colors.black.withValues(alpha: 0.3)
-                  : Colors.black.withValues(alpha: 0.02),
-              blurRadius: isHovered ? 6 : 2,
-              offset: const Offset(0, 3),
+              color: color.withValues(alpha: isHovered ? 0.18 : 0.06),
+              blurRadius: isHovered ? 24 : 12,
+              offset: const Offset(0, 10),
             ),
           ],
         ),
-        padding: const EdgeInsets.all(26),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// Icon
             AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              width: 48,
-              height: 48,
+              duration: const Duration(milliseconds: 220),
+              width: 54,
+              height: 54,
               decoration: BoxDecoration(
-                color: isHovered
-                    ? Colors.indigo
-                    : Colors.indigo.shade50,
-                borderRadius: BorderRadius.circular(4),
+                gradient: LinearGradient(
+                  colors: isHovered
+                      ? [color, color.withValues(alpha: 0.85)]
+                      : [color.withValues(alpha: 0.15), color.withValues(alpha: 0.05)],
+                ),
+                borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(
                 widget.item.icon,
-                color: isHovered ? Colors.white : Colors.indigo,
+                size: 26,
+                color: isHovered ? Colors.white : color,
               ),
             ),
+
             const SizedBox(height: 22),
+
+            /// Title
             SelectableText(
               widget.item.title,
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                fontSize: isMobile ? 17 : 19,
                 fontWeight: FontWeight.w600,
               ),
             ),
+
             const SizedBox(height: 12),
+
+            /// Description
             SelectableText(
               widget.item.desc,
-              style: const TextStyle(
-                fontSize: 15,
-                height: 1.5,
+              style: TextStyle(
+                fontSize: isMobile ? 14 : 15,
+                height: 1.6,
                 color: Colors.black87,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            /// Features
+            ...widget.item.features.map(
+                  (feature) => Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.check_circle, size: 16, color: color),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: SelectableText(
+                        feature,
+                        style: TextStyle(
+                          fontSize: isMobile ? 14 : 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -171,3 +218,7 @@ class _ServiceCardState extends State<ServiceCard> {
     );
   }
 }
+
+
+
+
