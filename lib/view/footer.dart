@@ -51,7 +51,7 @@ class FooterSection extends StatelessWidget {
                   const SizedBox(height: 50),
                   const Divider(color: Colors.white24),
                   const SizedBox(height: 20),
-                  const SelectableText(
+                  const Text(
                     '© 2025 Appdevix. All rights reserved.',
                     style: TextStyle(color: Colors.white54, fontSize: 14),
                   ),
@@ -75,12 +75,12 @@ class _FooterCompanyInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SelectableText(
+          Text(
             StringConstants.appName,
             style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 14),
-          SelectableText(
+          Text(
             'We build scalable mobile and web products for startups and growing businesses.',
             style: TextStyle(color: Colors.white70, height: 1.6),
           ),
@@ -121,16 +121,16 @@ class _FooterContact extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SelectableText(
+          Text(
             'Contact',
             style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 14),
-          SelectableText('test@dummy.com', style: TextStyle(color: Colors.white70)),
+          Text('test@dummy.com', style: TextStyle(color: Colors.white70)),
           SizedBox(height: 10),
-          SelectableText('+91 9455122458', style: TextStyle(color: Colors.white70)),
+          Text('+91 9455122458', style: TextStyle(color: Colors.white70)),
           SizedBox(height: 10),
-          SelectableText('India • Working Globally', style: TextStyle(color: Colors.white70)),
+          Text('India • Working Globally', style: TextStyle(color: Colors.white70)),
         ],
       ),
     );
@@ -150,7 +150,7 @@ class _FooterColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SelectableText(
+          Text(
             title,
             style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
           ),
@@ -158,7 +158,7 @@ class _FooterColumn extends StatelessWidget {
           ...items.map(
             (item) => Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: SelectableText(item, style: const TextStyle(color: Colors.white70, fontSize: 14)),
+              child: Text(item, style: const TextStyle(color: Colors.white70, fontSize: 14)),
             ),
           ),
         ],

@@ -14,7 +14,7 @@ class ContactSection extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1000),
           child: Column(
             children: [
-              const SelectableText(
+              const Text(
                 'Get in Touch',
                 style: TextStyle(
                   fontSize: 32,
@@ -22,7 +22,7 @@ class ContactSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              const SelectableText(
+              const Text(
                 'Have a project in mind or want to discuss an idea?\nWe’d love to hear from you.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -74,7 +74,7 @@ class ContactInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: const [
-        SelectableText(
+        Text(
           'Let’s build something great together',
           style: TextStyle(
             fontSize: 22,
@@ -82,7 +82,7 @@ class ContactInfo extends StatelessWidget {
           ),
         ),
         SizedBox(height: 16),
-        SelectableText(
+        Text(
           'Whether you’re a startup or an established business, '
               'Appdevix helps you turn ideas into scalable digital products.',
           style: TextStyle(
@@ -123,7 +123,7 @@ class ContactRow extends StatelessWidget {
       children: [
         Icon(icon, size: 20, color: Colors.indigo),
         const SizedBox(width: 12),
-        SelectableText(
+        Text(
           text,
           style: const TextStyle(fontSize: 15),
         ),
@@ -169,7 +169,7 @@ class ContactForm extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const SelectableText(
+              child: const Text(
                 'Send Message',
                 style: TextStyle(
                   fontSize: 16,

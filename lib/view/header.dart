@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../controller/mian_controller.dart';
-import '../utiles/constants.dart';
 
 class AppHeader extends StatelessWidget {
   final MianController mianController;
@@ -11,14 +10,11 @@ class AppHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-
     return ValueListenableBuilder<double>(
       valueListenable: mianController.progress,
       builder: (context, t, _) {
-        final double height = 50 + (30 * t); // 80 → 50
-        final double fontSize = 14 + (4 * t);
+        final double height = 50 + (30 * t);
         final double shadowOpacity = (1 - t) * 0.25;
-
         return AnimatedContainer(
           duration: const Duration(milliseconds: 120),
           curve: Curves.easeOut,
@@ -35,31 +31,43 @@ class AppHeader extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.11),
+            padding: EdgeInsets.only(left: width * 0.09,right: width * 0.11),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 /// Logo
-                Row(
-                  children: [
-                    const Icon(Icons.apps, color: Colors.indigo, size: 24),
-                    const SizedBox(width: 6),
-                    Text(
-                      StringConstants.appName,
-                      style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w600, color: Colors.black87),
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Image.asset("assets/AppLogo1.png"),
                 ),
 
                 /// Menu
                 Row(
                   children: [
-                    NavItem(title: 'Home', onTap: () => mianController.scrollToHome()),
-                    NavItem(title: 'Services', onTap: () => mianController.scrollToServices()),
-                    NavItem(title: 'Features', onTap: () => mianController.scrollToFeature()),
-                    NavItem(title: 'Works', onTap: () => mianController.scrollToWork()),
-                    NavItem(title: 'Blog', onTap: () => mianController.scrollToBlog()),
-                    NavItem(title: 'Contact', onTap: () => mianController.scrollToContact()),
+                    NavItem(
+                      title: 'Home',
+                      onTap: () => mianController.scrollToHome(),
+                    ),
+                    NavItem(
+                      title: 'Services',
+                      onTap: () => mianController.scrollToServices(),
+                    ),
+                    NavItem(
+                      title: 'Features',
+                      onTap: () => mianController.scrollToFeature(),
+                    ),
+                    NavItem(
+                      title: 'Works',
+                      onTap: () => mianController.scrollToWork(),
+                    ),
+                    NavItem(
+                      title: 'Blog',
+                      onTap: () => mianController.scrollToBlog(),
+                    ),
+                    NavItem(
+                      title: 'Contact',
+                      onTap: () => mianController.scrollToContact(),
+                    ),
                   ],
                 ),
               ],
@@ -85,7 +93,11 @@ class NavItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14),
         child: Text(
           title,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black87),
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: Colors.black87,
+          ),
         ),
       ),
     );

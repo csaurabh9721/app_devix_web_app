@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../data/feature_data.dart';
 
 class FeaturesSection extends StatelessWidget {
@@ -47,7 +46,7 @@ class FeaturesSection extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16),
-                  SelectableText(
+                  Text(
                     'Built for ambition. Engineered for growth.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -57,7 +56,7 @@ class FeaturesSection extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 18),
-                  SelectableText(
+                  Text(
                     'We don’t just build software — we create scalable, reliable products that help businesses grow with confidence.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -71,7 +70,7 @@ class FeaturesSection extends StatelessWidget {
 
               SizedBox(height: isMobile ? 30 : 50),
 
-              /// Features Grid (Soft, Premium)
+              /// Feature Cards
               Wrap(
                 spacing: 30,
                 runSpacing: 30,
@@ -91,11 +90,6 @@ class FeaturesSection extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
 class FeatureShowcaseItem extends StatefulWidget {
   final FeatureItem item;
 
@@ -110,78 +104,95 @@ class _FeatureShowcaseItemState extends State<FeatureShowcaseItem> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => isHovered = true),
-      onExit: (_) => setState(() => isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        transform: isHovered
-            ? (Matrix4.identity()..translate(0.0, -6.0))
-            : Matrix4.identity(),
-        padding: const EdgeInsets.all(28),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white.withOpacity(0.85),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.indigo.withOpacity(isHovered ? 0.25 : 0.12),
-              blurRadius: isHovered ? 40 : 25,
-              offset: const Offset(0, 18),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// Glass Icon
-            Row(
-              children: [
-                Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.indigo.withOpacity(0.35),
-                        blurRadius: 20,
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    widget.item.icon,
-                    color: Colors.indigo,
-                    size: 28,
-                  ),
-                ),
-                const SizedBox(width: 22),
+    final isMobile = MediaQuery.of(context).size.width < 900;
+    final enableHover = !isMobile;
 
-                SelectableText(
-                  widget.item.title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            SelectableText(
-              widget.item.desc,
-              style: const TextStyle(
-                fontSize: 15.5,
-                height: 1.8,
-                color: Colors.black87,
-              ),
-            ),
-          ],
+    return MouseRegion(
+      onEnter: enableHover ? (_) => setState(() => isHovered = true) : null,
+      onExit: enableHover ? (_) => setState(() => isHovered = false) : null,
+      child: TweenAnimationBuilder<double>(
+        duration: const Duration(milliseconds: 220),
+        tween: Tween(begin: 0, end: isHovered ? 1 : 0),
+        builder: (context, value, child) {
+          return Transform.translate(
+            offset: Offset(0, -6 * value),
+            child: child,
+          );
+        },
+        child: _FeatureCardContent(
+          item: widget.item,
+          isHovered: isHovered,
         ),
       ),
     );
   }
 }
+class _FeatureCardContent extends StatelessWidget {
+  final FeatureItem item;
+  final bool isHovered;
 
+  const _FeatureCardContent({
+    required this.item,
+    required this.isHovered,
+  });
 
-
-
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.indigo.withOpacity(isHovered ? 0.18 : 0.08),
+            blurRadius: isHovered ? 16 : 10,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// Icon Row
+          Row(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.indigo.withOpacity(0.08),
+                ),
+                child: Icon(
+                  item.icon,
+                  color: Colors.indigo,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 22),
+              Expanded(
+                child: Text(
+                  item.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Text(
+            item.desc,
+            style: const TextStyle(
+              fontSize: 15.5,
+              height: 1.8,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

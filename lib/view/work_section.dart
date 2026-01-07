@@ -38,7 +38,7 @@ class WorkSection extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1100),
           child: Column(
             children: [
-              const SelectableText(
+              const Text(
                 'Our Work',
                 style: TextStyle(
                   fontSize: 32,
@@ -46,7 +46,7 @@ class WorkSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              const SelectableText(
+              const Text(
                 'A glimpse of products we’ve built and problems we’ve solved.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -108,7 +108,7 @@ class WorkCard extends StatelessWidget {
               color: Colors.indigo.shade50,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: SelectableText(
+            child: Text(
               item.category,
               style: const TextStyle(
                 fontSize: 12,
@@ -118,7 +118,7 @@ class WorkCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          SelectableText(
+          Text(
             item.title,
             style: const TextStyle(
               fontSize: 18,
@@ -126,7 +126,7 @@ class WorkCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          SelectableText(
+          Text(
             item.description,
             style: const TextStyle(
               fontSize: 15,
@@ -141,7 +141,7 @@ class WorkCard extends StatelessWidget {
             children: item.tech
                 .map(
                   (t) => Chip(
-                label: SelectableText(
+                label: Text(
                   t,
                   style: const TextStyle(fontSize: 12),
                 ),

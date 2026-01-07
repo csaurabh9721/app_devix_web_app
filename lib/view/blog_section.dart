@@ -38,7 +38,7 @@ class BlogSection extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1100),
           child: Column(
             children: [
-              const SelectableText(
+              const Text(
                 'From Our Blog',
                 style: TextStyle(
                   fontSize: 32,
@@ -46,7 +46,7 @@ class BlogSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              const SelectableText(
+              const Text(
                 'Insights, experiences, and best practices from our team.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -83,7 +83,7 @@ class BlogSection extends StatelessWidget {
 
               TextButton(
                 onPressed: () {},
-                child: const SelectableText(
+                child: const Text(
                   'View All Articles →',
                   style: TextStyle(
                     fontSize: 16,
@@ -115,7 +115,7 @@ class BlogCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SelectableText(
+          Text(
             item.category.toUpperCase(),
             style: const TextStyle(
               fontSize: 12,
@@ -124,7 +124,7 @@ class BlogCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
-          SelectableText(
+          Text(
             item.title,
             style: const TextStyle(
               fontSize: 18,
@@ -132,7 +132,7 @@ class BlogCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          SelectableText(
+          Text(
             item.excerpt,
             style: const TextStyle(
               fontSize: 15,
@@ -142,7 +142,7 @@ class BlogCard extends StatelessWidget {
           ),
           const Spacer(),
           const SizedBox(height: 20),
-          SelectableText(
+          Text(
             item.readTime,
             style: const TextStyle(
               fontSize: 13,

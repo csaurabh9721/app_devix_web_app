@@ -26,10 +26,15 @@ class _DashboardState extends State<Dashboard> {
     _mianController.scrollController.addListener(_onScroll);
   }
 
+  double _lastOffset = 0;
+
   void _onScroll() {
     final offset = _mianController.scrollController.offset;
-    final value = (1 - offset / 120).clamp(0.0, 1.0);
-    _mianController.progress.value = value;
+
+    if ((offset - _lastOffset).abs() < 8) return;
+
+    _lastOffset = offset;
+    _mianController.progress.value = (1 - offset / 120).clamp(0.0, 1.0);
   }
 
   @override
@@ -51,19 +56,32 @@ class _DashboardState extends State<Dashboard> {
             height: size.height,
             width: size.width,
 
-            child: SingleChildScrollView(
+            child: CustomScrollView(
               controller: _mianController.scrollController,
-              child: Column(
-                children: [
-                  SizedBox(key: _mianController.homeKey, child: Home()),
-                  SizedBox(key: _mianController.servicesKey, child: ServicesSection()),
-                  SizedBox(key: _mianController.featuresKey, child: FeaturesSection()),
-                  SizedBox(key: _mianController.worksKey, child: WorkSection()),
-                  SizedBox(key: _mianController.blogKey, child: BlogSection()),
-                  SizedBox(key: _mianController.contactKey, child: ContactSection()),
-                  FooterSection(),
-                ],
-              ),
+              slivers: [
+                SliverToBoxAdapter(key: _mianController.homeKey, child: Home()),
+                SliverToBoxAdapter(
+                  key: _mianController.servicesKey,
+                  child: ServicesSection(),
+                ),
+                SliverToBoxAdapter(
+                  key: _mianController.featuresKey,
+                  child: FeaturesSection(),
+                ),
+                SliverToBoxAdapter(
+                  key: _mianController.worksKey,
+                  child: WorkSection(),
+                ),
+                SliverToBoxAdapter(
+                  key: _mianController.blogKey,
+                  child: BlogSection(),
+                ),
+                SliverToBoxAdapter(
+                  key: _mianController.contactKey,
+                  child: ContactSection(),
+                ),
+                SliverToBoxAdapter(child: FooterSection()),
+              ],
             ),
           ),
           AppHeader(mianController: _mianController),
