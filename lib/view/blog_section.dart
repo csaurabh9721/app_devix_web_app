@@ -1,94 +1,105 @@
 import 'package:flutter/material.dart';
 
 class BlogSection extends StatelessWidget {
-  const BlogSection({super.key});
+  BlogSection({super.key});
 
-  static final List<BlogItem> blogs = [
-    BlogItem(
-      category: 'App Development',
-      title: 'How to Build a Scalable Mobile App from Day One',
+  final List<BlogPost> posts = [
+    BlogPost(
+      title: 'How Flutter Web Performs in Real Production',
       excerpt:
-      'Key architectural and development practices every startup should follow when building a mobile app.',
-      readTime: '5 min read',
-    ),
-    BlogItem(
-      category: 'Startups',
-      title: 'MVP Development: What to Build and What to Skip',
-      excerpt:
-      'A practical guide for startups to launch faster without wasting time and budget.',
-      readTime: '4 min read',
-    ),
-    BlogItem(
-      category: 'Engineering',
-      title: 'Why Clean Architecture Matters for Long-Term Growth',
-      excerpt:
-      'Understanding how clean architecture helps scale products and teams efficiently.',
+          'A deep dive into performance tuning, rendering behavior, and best practices for Flutter Web apps.',
+      date: 'Sep 12, 2025',
       readTime: '6 min read',
+    ),
+    BlogPost(
+      title: 'Clean Architecture for Scalable Flutter Apps',
+      excerpt:
+          'Learn how to structure Flutter apps that scale gracefully with growing teams.',
+      date: 'Aug 25, 2025',
+      readTime: '8 min read',
+    ),
+    BlogPost(
+      title: 'Optimizing Flutter Animations for Web',
+      excerpt:
+          'How to avoid jank, improve FPS, and use GPU-friendly animations.',
+      date: 'Aug 02, 2025',
+      readTime: '5 min read',
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = width < 900;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 100, 24, 0),
-      color: Colors.white,
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 30 : 50,
+        horizontal: isMobile ? 16 : 24,
+      ),
+      color: const Color(0xFFF9FAFC),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1100),
+          constraints: const BoxConstraints(maxWidth: 1200),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'From Our Blog',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 14),
-              const Text(
-                'Insights, experiences, and best practices from our team.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                ),
-              ),
-              const SizedBox(height: 60),
-
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  int columns = 3;
-                  if (constraints.maxWidth < 1000) columns = 2;
-                  if (constraints.maxWidth < 650) columns = 1;
-
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: blogs.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columns,
-                      crossAxisSpacing: 32,
-                      mainAxisSpacing: 32,
-                      childAspectRatio: 1.25,
+              /// Header
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'INSIGHTS',
+                    style: TextStyle(
+                      fontSize: 13,
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.indigo,
                     ),
-                    itemBuilder: (context, index) {
-                      return BlogCard(item: blogs[index]);
-                    },
-                  );
-                },
+                  ),
+                  SizedBox(height: 14),
+                  Text(
+                    'Latest from our blog',
+                    style: TextStyle(
+                      fontSize: 38,
+                      fontWeight: FontWeight.w800,
+                      height: 1.2,
+                    ),
+                  ),
+                  SizedBox(height: 14),
+                  Text(
+                    'Thoughts, tutorials, and insights on Flutter, architecture, and building scalable products.',
+                    style: TextStyle(
+                      fontSize: 16.5,
+                      height: 1.8,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
               ),
+
+              SizedBox(height: isMobile ? 40 : 60),
+
+              isMobile
+                  ? _MobileBlogList(posts: posts)
+                  : _DesktopBlogLayout(posts: posts),
 
               const SizedBox(height: 50),
 
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'View All Articles →',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+              /// CTA
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.indigo,
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
+                  child: const Text('Read all articles →'),
                 ),
               ),
             ],
@@ -98,73 +109,164 @@ class BlogSection extends StatelessWidget {
     );
   }
 }
-class BlogCard extends StatelessWidget {
-  final BlogItem item;
 
-  const BlogCard({super.key, required this.item});
+class _DesktopBlogLayout extends StatelessWidget {
+  final List<BlogPost> posts;
+
+  const _DesktopBlogLayout({required this.posts});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(28),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
+    final featured = posts.first;
+    final others = posts.skip(1).toList();
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// Featured Post
+        Expanded(flex: 5, child: _FeaturedPost(post: featured)),
+        const SizedBox(width: 40),
+
+        /// List
+        Expanded(
+          flex: 4,
+          child: Column(
+            children: others.map((post) => _BlogListItem(post: post)).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _MobileBlogList extends StatelessWidget {
+  final List<BlogPost> posts;
+
+  const _MobileBlogList({required this.posts});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: posts.map((post) => _BlogListItem(post: post)).toList(),
+    );
+  }
+}
+
+class _FeaturedPost extends StatelessWidget {
+  final BlogPost post;
+
+  const _FeaturedPost({required this.post});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            item.category.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Colors.indigo,
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.indigo.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Image.network(
+                "https://strapi.dhiwise.com/uploads/Flutter_Web_examples_OG_Image_c02978694b.png",
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           const SizedBox(height: 18),
           Text(
-            item.title,
+            post.title,
             style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontSize: 26,
+              fontWeight: FontWeight.w800,
+              height: 1.3,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           Text(
-            item.excerpt,
+            post.excerpt,
             style: const TextStyle(
-              fontSize: 15,
-              height: 1.5,
+              fontSize: 16,
+              height: 1.8,
               color: Colors.black87,
             ),
           ),
-          const Spacer(),
-          const SizedBox(height: 20),
-          Text(
-            item.readTime,
-            style: const TextStyle(
-              fontSize: 13,
-              color: Colors.black54,
-            ),
-          ),
+          const SizedBox(height: 14),
+          _Meta(post: post),
         ],
       ),
     );
   }
 }
 
-class BlogItem {
+class _BlogListItem extends StatelessWidget {
+  final BlogPost post;
+
+  const _BlogListItem({required this.post});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      hoverColor: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              post.title,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              post.excerpt,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 14.5,
+                height: 1.6,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 8),
+            _Meta(post: post),
+            const Divider(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Meta extends StatelessWidget {
+  final BlogPost post;
+
+  const _Meta({required this.post});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${post.date} · ${post.readTime}',
+      style: const TextStyle(fontSize: 13, color: Colors.black54),
+    );
+  }
+}
+
+class BlogPost {
   final String title;
   final String excerpt;
-  final String category;
+  final String date;
   final String readTime;
 
-  const BlogItem({
+  BlogPost({
     required this.title,
     required this.excerpt,
-    required this.category,
+    required this.date,
     required this.readTime,
   });
 }

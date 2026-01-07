@@ -5,60 +5,34 @@ class ContactSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = width < 900;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 24),
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 70 : 110,
+        horizontal: isMobile ? 16 : 24,
+      ),
       color: Colors.white,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
-          child: Column(
-            children: [
-              const Text(
-                'Get in Touch',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 14),
-              const Text(
-                'Have a project in mind or want to discuss an idea?\nWe’d love to hear from you.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                  height: 1.6,
-                ),
-              ),
-              const SizedBox(height: 60),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final isMobile = constraints.maxWidth < 700;
-
-                  return Flex(
-                    direction: isMobile ? Axis.vertical : Axis.horizontal,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Left Info
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            right: isMobile ? 0 : 40,
-                            bottom: isMobile ? 40 : 0,
-                          ),
-                          child: const ContactInfo(),
-                        ),
-                      ),
-
-                      // Right Form
-                      Expanded(
-                        child: ContactForm(),
-                      ),
-                    ],
-                  );
-                },
-              ),
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: isMobile
+              ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              _ContactIntro(),
+              SizedBox(height: 40),
+              _ContactForm(),
+            ],
+          )
+              : Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Expanded(flex: 5, child: _ContactIntro()),
+              SizedBox(width: 60),
+              Expanded(flex: 6, child: _ContactForm()),
             ],
           ),
         ),
@@ -66,8 +40,8 @@ class ContactSection extends StatelessWidget {
     );
   }
 }
-class ContactInfo extends StatelessWidget {
-  const ContactInfo({super.key});
+class _ContactIntro extends StatelessWidget {
+  const _ContactIntro();
 
   @override
   Widget build(BuildContext context) {
@@ -75,143 +49,132 @@ class ContactInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: const [
         Text(
-          'Let’s build something great together',
+          'CONTACT',
           style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
+            fontSize: 13,
+            letterSpacing: 2,
+            fontWeight: FontWeight.w700,
+            color: Colors.indigo,
           ),
         ),
-        SizedBox(height: 16),
+        SizedBox(height: 14),
         Text(
-          'Whether you’re a startup or an established business, '
-              'Appdevix helps you turn ideas into scalable digital products.',
+          'Let’s build something great together',
           style: TextStyle(
-            fontSize: 15,
-            height: 1.6,
+            fontSize: 38,
+            fontWeight: FontWeight.w800,
+            height: 1.2,
+          ),
+        ),
+        SizedBox(height: 18),
+        Text(
+          'Have an idea, a project, or just want to talk tech?\n'
+              'We’d love to hear from you. Tell us about your goals and we’ll help you shape the solution.',
+          style: TextStyle(
+            fontSize: 16.5,
+            height: 1.8,
+            color: Colors.black54,
+          ),
+        ),
+        SizedBox(height: 28),
+        Text(
+          '✔ Fast response\n'
+              '✔ Clear communication\n'
+              '✔ Scalable solutions',
+          style: TextStyle(
+            fontSize: 15.5,
+            height: 1.8,
             color: Colors.black87,
           ),
         ),
-        SizedBox(height: 24),
-        ContactRow(
-          icon: Icons.email,
-          text: 'test@dummy.com',
-        ),
-        SizedBox(height: 12),
-        ContactRow(
-          icon: Icons.phone,
-          text: '+91 XXXXX XXXXX',
-        ),
-        SizedBox(height: 12),
-        ContactRow(
-          icon: Icons.location_on,
-          text: 'India • Working Globally',
-        ),
       ],
     );
   }
 }
-
-class ContactRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const ContactRow({super.key, required this.icon, required this.text});
+class _ContactForm extends StatelessWidget {
+  const _ContactForm();
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 20, color: Colors.indigo),
-        const SizedBox(width: 12),
-        Text(
-          text,
-          style: const TextStyle(fontSize: 15),
+        _Field(label: 'Your Name'),
+        const SizedBox(height: 18),
+        _Field(label: 'Email Address'),
+        const SizedBox(height: 18),
+        _Field(label: 'Project Type (Web / Mobile / Other)'),
+        const SizedBox(height: 18),
+        _Field(
+          label: 'Tell us about your project',
+          maxLines: 5,
         ),
-      ],
-    );
-  }
-}
-class ContactForm extends StatelessWidget {
-  ContactForm({super.key});
+        const SizedBox(height: 30),
 
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          _InputField(
-            hint: 'Your Name',
-            icon: Icons.person,
-          ),
-          const SizedBox(height: 16),
-          _InputField(
-            hint: 'Email Address',
-            icon: Icons.email,
-          ),
-          const SizedBox(height: 16),
-          _InputField(
-            hint: 'Your Message',
-            maxLines: 4,
-          ),
-          const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.indigo,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+        /// CTA
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.indigo,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
-                'Send Message',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+            ),
+            child: const Text(
+              'Send Message',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
-class _InputField extends StatelessWidget {
-  final String hint;
-   final IconData? icon;
+class _Field extends StatelessWidget {
+  final String label;
   final int maxLines;
 
-  const _InputField({
-    required this.hint,
-     this.icon,
+  const _Field({
+    required this.label,
     this.maxLines = 1,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      maxLines: maxLines,
-      decoration: InputDecoration(
-        hintText: hint,
-        prefixIcon: icon == null ? null : Icon(icon),
-        filled: true,
-        fillColor: Colors.grey.shade50,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.black87,
+          ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+        const SizedBox(height: 6),
+        TextField(
+          maxLines: maxLines,
+          decoration: InputDecoration(
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.indigo),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }

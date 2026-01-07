@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../utiles/constants.dart';
 
 class FooterSection extends StatelessWidget {
@@ -9,8 +8,8 @@ class FooterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: const Color(0xFF0F172A), // dark navy
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 24),
+      color: const Color(0xFF0B1220),
+      padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
@@ -19,41 +18,83 @@ class FooterSection extends StatelessWidget {
               final isMobile = constraints.maxWidth < 800;
 
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  /// TOP CONTENT
                   Flex(
                     direction: isMobile ? Axis.vertical : Axis.horizontal,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Company Info
                       const _FooterCompanyInfo(),
 
                       if (!isMobile) const SizedBox(width: 40),
-                      if (!isMobile) const _FooterLinks(),
+                      if (!isMobile)
+                        const _FooterColumn(
+                          title: 'Quick Links',
+                          items: [
+                            'Home',
+                            'Services',
+                            'Features',
+                            'Works',
+                            'Blog',
+                          ],
+                        ),
 
                       if (!isMobile) const SizedBox(width: 40),
-                      if (!isMobile) const _FooterServices(),
+                      if (!isMobile)
+                        const _FooterColumn(
+                          title: 'Services',
+                          items: [
+                            'Mobile App Development',
+                            'Backend & APIs',
+                            'Web Development',
+                            'MVP for Startups',
+                            'UI/UX Design',
+                          ],
+                        ),
 
                       if (!isMobile) const SizedBox(width: 40),
                       if (!isMobile) const _FooterContact(),
                     ],
                   ),
 
+                  /// MOBILE STACK
                   if (isMobile) ...const [
                     SizedBox(height: 40),
-                    _FooterLinks(),
+                    _FooterColumn(
+                      title: 'Quick Links',
+                      items: ['Home', 'Services', 'Features', 'Works', 'Blog'],
+                    ),
                     SizedBox(height: 32),
-                    _FooterServices(),
+                    _FooterColumn(
+                      title: 'Services',
+                      items: [
+                        'Mobile App Development',
+                        'Backend & APIs',
+                        'Web Development',
+                        'MVP for Startups',
+                        'UI/UX Design',
+                      ],
+                    ),
                     SizedBox(height: 32),
                     _FooterContact(),
                   ],
 
-                  const SizedBox(height: 50),
-                  const Divider(color: Colors.white24),
-                  const SizedBox(height: 20),
-                  const Text(
-                    '© 2025 Appdevix. All rights reserved.',
-                    style: TextStyle(color: Colors.white54, fontSize: 14),
+                  const SizedBox(height: 60),
+                  const Divider(color: Colors.white12),
+                  const SizedBox(height: 22),
+
+                  /// BOTTOM BAR
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        '© 2025 Appdevix. All rights reserved.',
+                        style: TextStyle(color: Colors.white54, fontSize: 14),
+                      ),
+                      _FooterSocials(),
+                    ],
                   ),
                 ],
               );
@@ -65,24 +106,35 @@ class FooterSection extends StatelessWidget {
   }
 }
 
+/// ================= COMPANY INFO =================
 class _FooterCompanyInfo extends StatelessWidget {
   const _FooterCompanyInfo();
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 300,
+      width: 320,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            StringConstants.appName,
-            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 14),
-          Text(
+         Container(
+           height: 60,
+
+           padding: EdgeInsets.all(12),
+           decoration: BoxDecoration(
+             color: Colors.white,
+             borderRadius: BorderRadius.circular(12),
+           ),
+           child: Image.asset("assets/AppLogo1.png",fit: BoxFit.fill,),
+         ),
+          const SizedBox(height: 16),
+          const Text(
             'We build scalable mobile and web products for startups and growing businesses.',
-            style: TextStyle(color: Colors.white70, height: 1.6),
+            style: TextStyle(
+              color: Colors.white70,
+              height: 1.7,
+              fontSize: 15,
+            ),
           ),
         ],
       ),
@@ -90,27 +142,73 @@ class _FooterCompanyInfo extends StatelessWidget {
   }
 }
 
-class _FooterLinks extends StatelessWidget {
-  const _FooterLinks();
+/// ================= FOOTER COLUMN =================
+class _FooterColumn extends StatelessWidget {
+  final String title;
+  final List<String> items;
+
+  const _FooterColumn({
+    required this.title,
+    required this.items,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const _FooterColumn(title: 'Quick Links', items: ['Home', 'Services', 'Features', 'Works', 'Blog']);
-  }
-}
-
-class _FooterServices extends StatelessWidget {
-  const _FooterServices();
-
-  @override
-  Widget build(BuildContext context) {
-    return const _FooterColumn(
-      title: 'Services',
-      items: ['Mobile App Development', 'Backend & APIs', 'Web Development', 'MVP for Startups', 'UI/UX Design'],
+    return SizedBox(
+      width: 200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ...items.map((item) => _FooterLink(text: item)),
+        ],
+      ),
     );
   }
 }
 
+/// ================= FOOTER LINK =================
+class _FooterLink extends StatefulWidget {
+  final String text;
+
+  const _FooterLink({required this.text});
+
+  @override
+  State<_FooterLink> createState() => _FooterLinkState();
+}
+
+class _FooterLinkState extends State<_FooterLink> {
+  bool hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => hover = true),
+      onExit: (_) => setState(() => hover = false),
+      cursor: SystemMouseCursors.click,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Text(
+          widget.text,
+          style: TextStyle(
+            color: hover ? Colors.indigo : Colors.white70,
+            fontSize: 14,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// ================= CONTACT =================
 class _FooterContact extends StatelessWidget {
   const _FooterContact();
 
@@ -123,12 +221,16 @@ class _FooterContact extends StatelessWidget {
         children: [
           Text(
             'Contact',
-            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-          SizedBox(height: 14),
-          Text('test@dummy.com', style: TextStyle(color: Colors.white70)),
+          SizedBox(height: 16),
+          Text('hello@appdevix.com', style: TextStyle(color: Colors.white70)),
           SizedBox(height: 10),
-          Text('+91 9455122458', style: TextStyle(color: Colors.white70)),
+          Text('+91 94551 22458', style: TextStyle(color: Colors.white70)),
           SizedBox(height: 10),
           Text('India • Working Globally', style: TextStyle(color: Colors.white70)),
         ],
@@ -137,32 +239,34 @@ class _FooterContact extends StatelessWidget {
   }
 }
 
-class _FooterColumn extends StatelessWidget {
-  final String title;
-  final List<String> items;
-
-  const _FooterColumn({required this.title, required this.items});
+/// ================= SOCIAL ICONS =================
+class _FooterSocials extends StatelessWidget {
+  const _FooterSocials();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 14),
-          ...items.map(
-            (item) => Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Text(item, style: const TextStyle(color: Colors.white70, fontSize: 14)),
-            ),
-          ),
-        ],
-      ),
+    return Row(
+      children: const [
+        _SocialIcon(icon: Icons.link),
+        SizedBox(width: 14),
+        _SocialIcon(icon: Icons.code),
+        SizedBox(width: 14),
+        _SocialIcon(icon: Icons.business),
+      ],
+    );
+  }
+}
+
+class _SocialIcon extends StatelessWidget {
+  final IconData icon;
+
+  const _SocialIcon({required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Icon(icon, color: Colors.white54, size: 20),
     );
   }
 }

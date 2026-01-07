@@ -1,4 +1,4 @@
 
 class StringConstants{
-  static final String appName = "AppName";
+  static final String appName = "AppDevix";
 }

@@ -2,6 +2,7 @@ import 'package:app_devix/view/work_section.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/mian_controller.dart';
+import 'about_section.dart';
 import 'blog_section.dart';
 import 'contact_section.dart';
 import 'feature_section.dart';
@@ -71,6 +72,10 @@ class _DashboardState extends State<Dashboard> {
                 SliverToBoxAdapter(
                   key: _mianController.worksKey,
                   child: WorkSection(),
+                ),
+                SliverToBoxAdapter(
+                  key: _mianController.aboutUs,
+                  child: AboutSection(),
                 ),
                 SliverToBoxAdapter(
                   key: _mianController.blogKey,
