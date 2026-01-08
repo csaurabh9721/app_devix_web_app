@@ -61,31 +61,13 @@ class _DashboardState extends State<Dashboard> {
               controller: _mianController.scrollController,
               slivers: [
                 SliverToBoxAdapter(key: _mianController.homeKey, child: Home()),
-                SliverToBoxAdapter(
-                  key: _mianController.servicesKey,
-                  child: ServicesSection(),
-                ),
-                SliverToBoxAdapter(
-                  key: _mianController.featuresKey,
-                  child: FeaturesSection(),
-                ),
-                SliverToBoxAdapter(
-                  key: _mianController.worksKey,
-                  child: WorkSection(),
-                ),
-                SliverToBoxAdapter(
-                  key: _mianController.aboutUs,
-                  child: AboutSection(),
-                ),
-                SliverToBoxAdapter(
-                  key: _mianController.blogKey,
-                  child: BlogSection(),
-                ),
-                SliverToBoxAdapter(
-                  key: _mianController.contactKey,
-                  child: ContactSection(),
-                ),
-                SliverToBoxAdapter(child: FooterSection()),
+                SliverToBoxAdapter(key: _mianController.servicesKey, child: ServicesSection()),
+                SliverToBoxAdapter(key: _mianController.featuresKey, child: FeaturesSection()),
+                SliverToBoxAdapter(key: _mianController.worksKey, child: WorkSection()),
+                SliverToBoxAdapter(key: _mianController.aboutUs, child: AboutSection()),
+                SliverToBoxAdapter(key: _mianController.blogKey, child: BlogSection()),
+                SliverToBoxAdapter(key: _mianController.contactKey, child: ContactSection()),
+                SliverToBoxAdapter(child: FooterSection(controller: _mianController)),
               ],
             ),
           ),

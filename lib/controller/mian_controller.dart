@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MianController {
-  final ValueNotifier<SectionType> activeSection = ValueNotifier(
-    SectionType.home,
-  );
+  final ValueNotifier<SectionType> activeSection = ValueNotifier(SectionType.home);
   final ScrollController scrollController = ScrollController();
   final ValueNotifier<double> progress = ValueNotifier(1.0);
   final GlobalKey homeKey = GlobalKey();
@@ -14,8 +12,16 @@ class MianController {
   final GlobalKey aboutUs = GlobalKey();
   final GlobalKey contactKey = GlobalKey();
 
-  void scrollTo(GlobalKey key) {
-    final context = key.currentContext;
+  void scrollTo(String section) {
+    Map<String, GlobalKey> keyMap = {
+      'Home': homeKey,
+      'Services': servicesKey,
+      'Features': featuresKey,
+      'Works': worksKey,
+      'About': aboutUs,
+      'Blog': blogKey,
+    };
+    final context = keyMap[section]?.currentContext ?? homeKey.currentContext;
     if (context != null) {
       Scrollable.ensureVisible(
         context,
