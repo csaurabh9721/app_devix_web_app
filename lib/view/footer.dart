@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../controller/mian_controller.dart';
+import '../data/common_data.dart';
 
 class FooterSection extends StatelessWidget {
   final MianController controller;
@@ -124,12 +125,24 @@ class _FooterCompanyInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 60,
+          Stack(
+            children: [
+              Container(
+                height: 60,
 
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
-            child: Image.asset("assets/AppLogo1.png", fit: BoxFit.fill),
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
+                child: Image.asset("assets/AppLogo1.png", fit: BoxFit.fill),
+              ),
+              Positioned(
+                bottom: 1,
+                right: 12,
+                child: const Text(
+                  'Solutions',
+                  style: TextStyle(color: Colors.black,  fontSize: 12,fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
           const Text(
@@ -221,9 +234,10 @@ class _FooterContact extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 16),
-          Text('hello@appdevix.com', style: TextStyle(color: Colors.white70)),
+          Text(CommonData.email, style: TextStyle(color: Colors.white70)),
           SizedBox(height: 10),
-          Text('+91 94551 22458', style: TextStyle(color: Colors.white70)),
+          Text(CommonData.mobile1, style: TextStyle(color: Colors.white70)),
+          Text(CommonData.mobile2, style: TextStyle(color: Colors.white70)),
           SizedBox(height: 10),
           Text('India • Working Globally', style: TextStyle(color: Colors.white70)),
         ],
@@ -231,35 +245,3 @@ class _FooterContact extends StatelessWidget {
     );
   }
 }
-
-// /// ================= SOCIAL ICONS =================
-// class _FooterSocials extends StatelessWidget {
-//   const _FooterSocials();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: const [
-//         _SocialIcon(icon: Icons.link),
-//         SizedBox(width: 14),
-//         _SocialIcon(icon: Icons.code),
-//         SizedBox(width: 14),
-//         _SocialIcon(icon: Icons.business),
-//       ],
-//     );
-//   }
-// }
-//
-// class _SocialIcon extends StatelessWidget {
-//   final IconData icon;
-//
-//   const _SocialIcon({required this.icon});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MouseRegion(
-//       cursor: SystemMouseCursors.click,
-//       child: Icon(icon, color: Colors.white54, size: 20),
-//     );
-//   }
-// }

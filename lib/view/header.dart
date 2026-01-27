@@ -45,6 +45,7 @@ class AppHeader extends StatelessWidget {
                     Row(
                       children: [
                         Image.asset("assets/AppLogo1.png", height: 34),
+
                       ],
                     ),
 

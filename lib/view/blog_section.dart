@@ -88,20 +88,20 @@ class BlogSection extends StatelessWidget {
               const SizedBox(height: 50),
 
               /// CTA
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.indigo,
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  child: const Text('Read all articles →'),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: TextButton(
+              //     onPressed: () {},
+              //     style: TextButton.styleFrom(
+              //       foregroundColor: Colors.indigo,
+              //       textStyle: const TextStyle(
+              //         fontSize: 16,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //     child: const Text('Read all articles →'),
+              //   ),
+              // ),
             ],
           ),
         ),

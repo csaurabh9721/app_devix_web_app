@@ -119,8 +119,8 @@ class _AboutHighlights extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
-        _HighlightItem(text: '5+ years of real-world development experience'),
-        _HighlightItem(text: '15+ successful projects delivered'),
+        _HighlightItem(text: '7+ years of real-world development experience'),
+        _HighlightItem(text: '25+ successful projects delivered'),
         _HighlightItem(text: 'Clean architecture & scalable systems'),
         _HighlightItem(text: 'Clear communication & long-term support'),
       ],
@@ -163,9 +163,9 @@ class _AboutStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
-        _StatBox(value: '15+', label: 'Projects Delivered'),
+        _StatBox(value: '25+', label: 'Projects Delivered'),
         SizedBox(height: 24),
-        _StatBox(value: '5+', label: 'Years Experience'),
+        _StatBox(value: '7+', label: 'Years Experience'),
         SizedBox(height: 24),
         _StatBox(value: '100%', label: 'Client Satisfaction'),
       ],

@@ -1,28 +1,10 @@
 import 'package:flutter/material.dart';
 
-class WorkSection extends StatelessWidget {
-  WorkSection({super.key});
+import '../data/projects_data.dart';
 
-  final List<WorkItem> works = [
-    WorkItem(
-      title: 'Fintech Mobile App',
-      desc: 'A secure and scalable fintech app with real-time transactions and analytics.',
-      image: 'https://cdn.corporatefinanceinstitute.com/assets/careers-in-fintech.jpeg',
-      tags: ['Flutter', 'SpringBoot', 'Live-Data'],
-    ),
-    WorkItem(
-      title: 'E-Commerce Platform',
-      desc: 'High-performance shopping platform with smooth UX and payment integration.',
-      image: 'https://raw.githubusercontent.com/ziddahedem/LC09-ecommerce-website/master/images/lc09-ecommerce%20website.jpg',
-      tags: ['Angular', 'SpringBoot', 'MySQL'],
-    ),
-    WorkItem(
-      title: 'Healthcare Dashboard',
-      desc: 'Data-driven admin dashboard for hospitals and clinics.',
-      image: 'https://s3-alpha.figma.com/hub/file/5382060381/182556ae-d6dd-4f11-9bbd-fb6236d8de91-cover.png',
-      tags: ['React', '.Net', 'PostgreSQL'],
-    ),
-  ];
+class WorkSection extends StatelessWidget {
+ const WorkSection({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +159,8 @@ class _WorkCardContent extends StatelessWidget {
           /// Image
           AspectRatio(
             aspectRatio: 16 / 10,
-            child: Image.network(item.image,fit: BoxFit.fill,),
+            child: item.isWebUrl ? Image.network(item.image,fit: BoxFit.fill,)
+            : Image.asset(item.image,fit: BoxFit.fill,),
           ),
 
           Padding(
@@ -230,18 +213,6 @@ class _WorkCardContent extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 20),
-
-                /// CTA
-                TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.indigo,
-                  ),
-                  child: const Text(
-                    'View Case Study →',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ),
               ],
             ),
           ),
@@ -250,16 +221,4 @@ class _WorkCardContent extends StatelessWidget {
     );
   }
 }
-class WorkItem {
-  final String title;
-  final String desc;
-  final String image;
-  final List<String> tags;
 
-  WorkItem({
-    required this.title,
-    required this.desc,
-    required this.image,
-    required this.tags,
-  });
-}
